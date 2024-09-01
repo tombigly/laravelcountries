@@ -3,11 +3,12 @@
 namespace PragmaRX\Countries\Package\Support;
 
 use Closure;
-use IlluminateAgnostic\Arr\Support\Arr;
-use IlluminateAgnostic\Str\Support\Str;
-use PragmaRX\Coollection\Package\Coollection;
+use Exception;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection as BaseCollection;
 
-class Collection extends Coollection
+class Collection extends BaseCollection
 {
     /**
      * Magic call methods.
@@ -112,11 +113,11 @@ class Collection extends Coollection
         return $this->filter(function ($data) use ($find, $propertyName, $finderClosure) {
             try {
                 $attributeValue = $data->{$propertyName};
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $attributeValue = null;
             }
 
-            return \is_null($attributeValue)
+            return is_null($attributeValue)
                 ? null
                 : $finderClosure($find, $attributeValue, $data);
         });
@@ -150,7 +151,7 @@ class Collection extends Coollection
     private function _whereAttribute(string $arrayName, $value)
     {
         $finderClosure = function ($value, $attributeValue) {
-            return \in_array($value, $attributeValue->toArray());
+            return in_array($value, $attributeValue->toArray());
         };
 
         return $this->hydrateDefaultElements(

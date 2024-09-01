@@ -3,7 +3,7 @@
 namespace PragmaRX\Countries\Update;
 
 use Exception;
-use PragmaRX\Coollection\Package\Coollection;
+use Illuminate\Support\Collection as Coollection;
 use PragmaRX\Countries\Package\Support\Base;
 
 class Rinvex extends Base
@@ -43,7 +43,7 @@ class Rinvex extends Base
      * Fill array with Rinvex usable data.
      *
      * @param  \PragmaRX\Coollection\Package\Coollection  $natural
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function fillRinvexFields($natural)
     {
@@ -60,7 +60,7 @@ class Rinvex extends Base
             'latlng'       => 'geo',
         ];
 
-        coollect($mergeable)->each(function ($to, $key) use (&$natural) {
+        collect($mergeable)->each(function ($to, $key) use (&$natural) {
             if (isset($natural[$key])) {
                 $natural->overwrite([$to => [$key => $natural[$key]]]);
 
@@ -135,10 +135,10 @@ class Rinvex extends Base
         })->first();
 
         if (is_null($state)) {
-            return coollect();
+            return collect();
         }
 
-        return coollect($state);
+        return collect($state);
     }
 
     /**
@@ -163,13 +163,13 @@ class Rinvex extends Base
      */
     public function mergeWithRinvex($natural, $rinvex, $translation, $suffix = '_rinvex')
     {
-        $defaultToRinvex = coollect([
+        $defaultToRinvex = collect([
             'currency',
             'languages',
             'dialling',
         ]);
 
-        $merge = coollect([
+        $merge = collect([
             'geo',
             'translations',
             'flag',
@@ -199,7 +199,7 @@ class Rinvex extends Base
             }
 
             if ($rinvexValue !== $naturalValue && $merge->contains($key)) {
-                $result[$key] = coollect($naturalValue)->overwrite($rinvexValue);
+                $result[$key] = collect($naturalValue)->overwrite($rinvexValue);
 
                 continue;
             }
@@ -213,7 +213,7 @@ class Rinvex extends Base
                 : $naturalValue; // Natural Earth Vector
         }
 
-        return coollect($result)->sortBy(function ($value, $key) {
+        return collect($result)->sortBy(function ($value, $key) {
             return $key;
         });
     }
@@ -222,18 +222,18 @@ class Rinvex extends Base
      * Merge state data with rinvex divisions data.
      *
      * @param $states
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function mergeCountryStatesWithRinvex($states)
     {
-        return coollect($states)->map(function ($state) {
+        return collect($states)->map(function ($state) {
             return $this->mergeStateWithRinvex($state);
         });
     }
 
     /**
      * @param $state
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      *
      * @throws Exception
      */
@@ -247,7 +247,7 @@ class Rinvex extends Base
             throw new Exception('Country not found for state');
         }
 
-        $state = coollect($this->natural->naturalToStateArray($state));
+        $state = collect($this->natural->naturalToStateArray($state));
 
         $rinvex = $this->findRinvexState($country, $state);
 
@@ -265,7 +265,7 @@ class Rinvex extends Base
      * @param $cca3
      * @param $postal
      * @param $country
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function rinvexToStateArray($rinvex, $cca3, $postal, $country)
     {

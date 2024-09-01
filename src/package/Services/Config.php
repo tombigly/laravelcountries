@@ -2,12 +2,14 @@
 
 namespace PragmaRX\Countries\Package\Services;
 
+use Illuminate\Support\Collection;
+
 class Config
 {
     /**
      * Configuration.
      *
-     * @var \PragmaRX\Coollection\Package\Coollection
+     * @var \Illuminate\Support\Collection
      */
     protected $config;
 
@@ -30,7 +32,7 @@ class Config
 
     /**
      * @param $key
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function get($key)
     {
@@ -58,7 +60,7 @@ class Config
      */
     protected function loadConfig()
     {
-        return coollect(
+        return collect(
             require __DIR__.'/../../config/countries.php'
         );
     }

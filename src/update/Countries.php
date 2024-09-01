@@ -92,7 +92,7 @@ class Countries extends Base
      * Build countries collection.
      *
      * @param $dataDir
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function buildCountriesCoollection($dataDir)
     {
@@ -104,12 +104,12 @@ class Countries extends Base
 
         $this->helper->message('Generating countries...');
 
-        $countries = coollect($shapeFile)->map(function ($country) {
+        $countries = collect($shapeFile)->map(function ($country) {
             return $this->natural->fixNaturalOddCountries($country);
         })->mapWithKeys(function ($natural) use ($mledoze, $dataDir) {
             [$mledoze, $countryCode] = $this->mledoze->findMledozeCountry($mledoze, $natural);
 
-            $natural = coollect($natural)->mapWithKeys(function ($country, $key) {
+            $natural = collect($natural)->mapWithKeys(function ($country, $key) {
                 return [strtolower($key) => $country];
             });
 

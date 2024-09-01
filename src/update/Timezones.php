@@ -2,8 +2,8 @@
 
 namespace PragmaRX\Countries\Update;
 
-use IlluminateAgnostic\Str\Support\Str;
-use PragmaRX\Coollection\Package\Coollection;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection as Coollection;
 use PragmaRX\Countries\Package\Services\Cache\Service as Cache;
 use PragmaRX\Countries\Package\Services\Config;
 use PragmaRX\Countries\Package\Support\Base;

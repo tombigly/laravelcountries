@@ -64,10 +64,10 @@ class Config
 
     /**
      * @param $key
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function get($key)
     {
-        return coollect($this->data[$key]);
+        return collect($this->data[$key]);
     }
 }

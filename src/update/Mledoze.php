@@ -2,7 +2,7 @@
 
 namespace PragmaRX\Countries\Update;
 
-use PragmaRX\Coollection\Package\Coollection;
+use Illuminate\Support\Collection as Coollection;
 use PragmaRX\Countries\Package\Support\Base;
 
 class Mledoze extends Base
@@ -43,7 +43,7 @@ class Mledoze extends Base
      */
     public function loadMledozeCountries()
     {
-        $mledoze = coollect($this->helper->loadJson('countries', 'third-party/mledoze/dist'))->mapWithKeys(function (
+        $mledoze = collect($this->helper->loadJson('countries', 'third-party/mledoze/dist'))->mapWithKeys(function (
             $country
         ) {
             $country = $this->updater->addDataSource($country, 'mledoze');
@@ -98,10 +98,10 @@ class Mledoze extends Base
         [$country, $countryCode] = $this->updater->findCountryByAnyField($mledoze, $natural);
 
         if (! $country->isEmpty()) {
-            return [coollect($this->helper->arrayKeysSnakeRecursive($country)), $countryCode];
+            return [collect($this->helper->arrayKeysSnakeRecursive($country)), $countryCode];
         }
 
-        return [coollect(), $countryCode];
+        return [collect(), $countryCode];
     }
 
     private function makeFlag($result)
@@ -156,7 +156,7 @@ class Mledoze extends Base
 
         $result = $this->makeFlag($result);
 
-        return coollect($result)->sortBy(function ($value, $key) {
+        return collect($result)->sortBy(function ($value, $key) {
             return $key;
         });
     }

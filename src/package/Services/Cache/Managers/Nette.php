@@ -39,7 +39,7 @@ class Nette implements CacheInterface
      */
     public function __construct($config = null, $path = null)
     {
-        $this->config = \is_null($config) ? new Config() : $config;
+        $this->config = is_null($config) ? new Config() : $config;
         $this->cache = new NetteCache($this->getStorage());
     }
 
@@ -60,7 +60,7 @@ class Nette implements CacheInterface
      */
     public function getCacheDir()
     {
-        if (\is_null($this->dir)) {
+        if (is_null($this->dir)) {
             $this->dir = $this->config->cache->directory ?: sys_get_temp_dir().'/__PRAGMARX_COUNTRIES__/cache';
 
             if (! file_exists($this->dir)) {
@@ -80,7 +80,7 @@ class Nette implements CacheInterface
     public function getStorage($path = null)
     {
         return new FileStorage(
-            \is_null($path)
+            is_null($path)
                 ? $this->getCacheDir()
                 : $path
         );
@@ -154,7 +154,7 @@ class Nette implements CacheInterface
      */
     public function getMultiple($keys, $default = null)
     {
-        return coollect($keys)->map(function ($key) {
+        return collect($keys)->map(function ($key) {
             return $this->get($key);
         });
     }
@@ -168,7 +168,7 @@ class Nette implements CacheInterface
      */
     public function setMultiple($values, $ttl = null)
     {
-        return coollect($values)->map(function ($value, $key) use ($ttl) {
+        return collect($values)->map(function ($value, $key) use ($ttl) {
             return $this->set($key, $value, $ttl);
         });
     }
@@ -181,7 +181,7 @@ class Nette implements CacheInterface
      */
     public function deleteMultiple($keys)
     {
-        coollect($keys)->map(function ($key) {
+        collect($keys)->map(function ($key) {
             $this->forget($key);
         });
     }
@@ -194,7 +194,7 @@ class Nette implements CacheInterface
      */
     public function has($key)
     {
-        return ! \is_null($this->get($key));
+        return ! is_null($this->get($key));
     }
 
     /**
@@ -209,7 +209,7 @@ class Nette implements CacheInterface
     {
         $value = $this->get($key);
 
-        if (! \is_null($value)) {
+        if (! is_null($value)) {
             return $value;
         }
 

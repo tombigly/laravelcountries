@@ -2,8 +2,8 @@
 
 namespace PragmaRX\Countries\Package\Services;
 
-use IlluminateAgnostic\Str\Support\Str;
-use PragmaRX\Coollection\Package\Coollection;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection as Coollection;
 
 class Hydrator
 {
@@ -93,7 +93,7 @@ class Hydrator
      *
      * @param $countries
      * @param $elements
-     * @return mixed
+     * @return \PragmaRX\Countries\Package\Support\Collection
      */
     private function hydrateCountries($countries, $elements = null)
     {
@@ -381,13 +381,13 @@ class Hydrator
      *
      * @param  \PragmaRX\Coollection\Package\Coollection|array|\stdClass  $target
      * @param  null  $elements
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function hydrate($target, $elements = null)
     {
         $elements = $this->getHydrationElements($elements);
 
-        if (coollect($elements)->count() === 0) {
+        if (collect($elements)->count() === 0) {
             return $target;
         }
 

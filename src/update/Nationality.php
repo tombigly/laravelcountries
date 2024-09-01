@@ -2,7 +2,7 @@
 
 namespace PragmaRX\Countries\Update;
 
-use PragmaRX\Coollection\Package\Coollection;
+use Illuminate\Support\Collection as Coollection;
 use PragmaRX\Countries\Package\Support\Base;
 
 class Nationality extends Base
@@ -35,7 +35,7 @@ class Nationality extends Base
      */
     public function load()
     {
-        $mledoze = coollect($this->helper->loadJson('countries', 'third-party/mledoze/dist'))->mapWithKeys(function (
+        $mledoze = collect($this->helper->loadJson('countries', 'third-party/mledoze/dist'))->mapWithKeys(function (
             $country
         ) {
             $country = $this->updater->addDataSource($country, 'mledoze');
@@ -90,10 +90,10 @@ class Nationality extends Base
         [$country, $countryCode] = $this->updater->findCountryByAnyField($mledoze, $natural);
 
         if (! $country->isEmpty()) {
-            return [coollect($this->helper->arrayKeysSnakeRecursive($country)), $countryCode];
+            return [collect($this->helper->arrayKeysSnakeRecursive($country)), $countryCode];
         }
 
-        return [coollect(), $countryCode];
+        return [collect(), $countryCode];
     }
 
     /**
@@ -137,7 +137,7 @@ class Nationality extends Base
             $result[$key] = $mledozeValue; // Natural Earth Vector
         }
 
-        return coollect($result)->sortBy(function ($value, $key) {
+        return collect($result)->sortBy(function ($value, $key) {
             return $key;
         });
     }

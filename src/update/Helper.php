@@ -3,7 +3,7 @@
 namespace PragmaRX\Countries\Update;
 
 use Exception;
-use IlluminateAgnostic\Str\Support\Str;
+use Illuminate\Support\Str;
 use PragmaRX\Countries\Package\Services\Command;
 use PragmaRX\Countries\Package\Services\Helper as ServiceHelper;
 use RecursiveDirectoryIterator;
@@ -163,7 +163,7 @@ class Helper
      */
     public function download($url, $directory)
     {
-        coollect((array) $url)->each(function ($url) use ($directory) {
+        collect((array) $url)->each(function ($url) use ($directory) {
             $filename = basename($url);
 
             $destination = $this->toDir("{$directory}/{$filename}");
@@ -266,7 +266,7 @@ class Helper
     protected function renameMasterToPackage($file, $subPath, $path, $exclude)
     {
         if (Str::endsWith($file, 'master.zip')) {
-            $dir = coollect(scandir($path))->filter(function ($file) use ($exclude) {
+            $dir = collect(scandir($path))->filter(function ($file) use ($exclude) {
                 return $file !== '.' && $file !== '..' && $file !== $exclude;
             })->first();
 
@@ -327,7 +327,7 @@ class Helper
      * Load a shapeFile.
      *
      * @param $dir
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function shapeFile($dir)
     {
@@ -350,9 +350,9 @@ class Helper
 
         unset($shapeRecords);
 
-        return coollect($result)->mapWithKeys(function ($fields, $key1) {
+        return collect($result)->mapWithKeys(function ($fields, $key1) {
             return [
-                strtolower($key1) => coollect($fields)->mapWithKeys(function ($value, $key2) {
+                strtolower($key1) => collect($fields)->mapWithKeys(function ($value, $key2) {
                     return [strtolower($key2) => $value];
                 }),
             ];
@@ -363,7 +363,7 @@ class Helper
      * Recursively change all array keys case.
      *
      * @param  array|\PragmaRX\Coollection\Package\Coollection  $array
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function arrayKeysSnakeRecursive($array)
     {
@@ -377,18 +377,18 @@ class Helper
                 : $value;
         });
 
-        return coollect($result);
+        return collect($result);
     }
 
     /**
      * Load CSV file.
      *
      * @param $csv
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function csvDecode($csv)
     {
-        return coollect(array_map('str_getcsv', $csv));
+        return collect(array_map('str_getcsv', $csv));
     }
 
     /**
@@ -437,7 +437,7 @@ class Helper
     {
         $this->config->get('downloadable')->each(function ($urls, $path) {
             if (! file_exists($destination = $this->dataDir("third-party/$path"))) {
-                coollect($urls)->each(function ($url) use ($destination) {
+                collect($urls)->each(function ($url) use ($destination) {
                     $this->download($url, $destination);
 
                     $file = basename($url);
@@ -474,7 +474,7 @@ class Helper
      * Load the shape file (DBF) to array.
      *
      * @param  string  $file
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function loadShapeFile($file)
     {
@@ -503,11 +503,11 @@ class Helper
      * Load json files from dir.
      *
      * @param $dir
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      */
     public function loadJsonFiles($dir)
     {
-        return coollect(glob("$dir/*.json*"))->mapWithKeys(function ($file) {
+        return collect(glob("$dir/*.json*"))->mapWithKeys(function ($file) {
             $key = str_replace('.json', '', str_replace('.json5', '', basename($file)));
 
             return [$key => $this->loadJson($file)];
@@ -590,7 +590,7 @@ class Helper
      *
      * @param $file
      * @param  string  $dir
-     * @return \PragmaRX\Coollection\Package\Coollection
+     * @return \Illuminate\Support\Collection
      *
      * @throws \Exception
      */
@@ -604,7 +604,7 @@ class Helper
             $file = $this->dataDir($this->addSuffix('.csv', "/$dir/".strtolower($file)));
         }
 
-        return coollect($this->csvDecode(file($file)));
+        return collect($this->csvDecode(file($file)));
     }
 
     /**

@@ -2,8 +2,9 @@
 
 namespace PragmaRX\Countries\Package\Services;
 
-use IlluminateAgnostic\Str\Support\Str;
-use PragmaRX\Coollection\Package\Coollection;
+use Illuminate\Support\Str;
+use Illuminate\Support\Collection as Coollection;
+use Illuminate\Support\Collection;
 use PragmaRX\Countries\Package\Data\Repository;
 use PragmaRX\Countries\Package\Services\Cache\Service as Cache;
 use PragmaRX\Countries\Package\Support\Base;
@@ -67,7 +68,7 @@ class Countries extends Base
         Hydrator $hydrator = null,
         Repository $repository = null
     ) {
-        $a = new \PragmaRX\Countries\Package\Services\Cache\Service();
+        new Cache();
 
         $this->helper = $this->instantiateHelper($helper);
 
@@ -106,14 +107,14 @@ class Countries extends Base
     {
         $instance = $this;
 
-        Coollection::macro('hydrate', function ($elements = null) use ($instance) {
+        Collection::macro('hydrate', function ($elements = null) use ($instance) {
             return $instance->hydrate($this, $elements);
         });
 
         foreach (Hydrator::HYDRATORS as $hydrator) {
             $hydrator = 'hydrate'.Str::studly($hydrator);
 
-            Coollection::macro($hydrator, function () use ($hydrator, $instance) {
+            Collection::macro($hydrator, function () use ($hydrator, $instance) {
                 return $instance->getRepository()->getHydrator()->{$hydrator}($this);
             });
         }
@@ -122,11 +123,11 @@ class Countries extends Base
     /**
      * Get all currencies.
      *
-     * @return Coollection
+     * @return Collection
      */
     public function currencies()
     {
-        return coollect($this->repository->currencies())->unique()->sort();
+        return collect($this->repository->currencies())->unique()->sort();
     }
 
     /**
@@ -179,8 +180,8 @@ class Countries extends Base
      */
     protected function instantiateCache(Cache $cache = null)
     {
-        if (\is_null($this->cache) || ! \is_null($cache)) {
-            $this->cache = ! \is_null($cache)
+        if (is_null($this->cache) || ! is_null($cache)) {
+            $this->cache = ! is_null($cache)
                 ? $cache
                 : new Cache($this->config);
         }
@@ -196,8 +197,8 @@ class Countries extends Base
      */
     protected function instantiateConfig($config = null)
     {
-        if (\is_null($this->config) || ! \is_null($config)) {
-            $this->config = ! \is_null($config)
+        if (is_null($this->config) || ! is_null($config)) {
+            $this->config = ! is_null($config)
                 ? $config
                 : new Config($this->helper);
         }
@@ -211,8 +212,8 @@ class Countries extends Base
      */
     protected function instantiateHelper(Helper $helper = null)
     {
-        $this->helper = \is_null($helper)
-            ? (\is_null($this->helper)
+        $this->helper = is_null($helper)
+            ? (is_null($this->helper)
                 ? $this->helper = new Helper($this->instantiateConfig())
                 : $this->helper)
             : $helper;
@@ -228,8 +229,8 @@ class Countries extends Base
      */
     protected function instantiateHydrator(Hydrator $hydrator = null)
     {
-        if (\is_null($this->hydrator) || ! \is_null($hydrator)) {
-            $this->hydrator = ! \is_null($hydrator)
+        if (is_null($this->hydrator) || ! is_null($hydrator)) {
+            $this->hydrator = ! is_null($hydrator)
                 ? $hydrator
                 : new Hydrator($this->config);
         }
@@ -243,7 +244,7 @@ class Countries extends Base
      */
     protected function instantiateRepository($repository)
     {
-        if (\is_null($repository)) {
+        if (is_null($repository)) {
             $repository = new Repository(
                 $this->instantiateCache(),
                 $this->instantiateHydrator(),
@@ -260,7 +261,7 @@ class Countries extends Base
      */
     protected function instantiateUpdater()
     {
-        if (\is_null($this->updater)) {
+        if (is_null($this->updater)) {
             $this->updater = new Updater($this->config, $this->helper);
         }
 
