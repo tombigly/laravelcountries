@@ -3,7 +3,6 @@
 namespace PragmaRX\Countries\Package\Services;
 
 use Illuminate\Support\Str;
-use Illuminate\Support\Collection as Coollection;
 use Illuminate\Support\Collection;
 use PragmaRX\Countries\Package\Data\Repository;
 use PragmaRX\Countries\Package\Services\Cache\Service as Cache;

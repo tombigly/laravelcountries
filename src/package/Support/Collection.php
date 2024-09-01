@@ -52,7 +52,7 @@ class Collection extends BaseCollection
      * @param  null  $value
      * @return static
      */
-    public function where($key, $operator, $value = null)
+    public function where($key, $operator = null, $value = null)
     {
         if (\func_num_args() === 2) {
             $value = $operator;

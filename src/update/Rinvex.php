@@ -62,7 +62,7 @@ class Rinvex extends Base
 
         collect($mergeable)->each(function ($to, $key) use (&$natural) {
             if (isset($natural[$key])) {
-                $natural->overwrite([$to => [$key => $natural[$key]]]);
+                $natural->replaceRecursive([$to => [$key => $natural[$key]]]);
 
                 unset($natural[$key]);
             }
@@ -257,7 +257,7 @@ class Rinvex extends Base
 
         $rinvex = $this->rinvexToStateArray($rinvex, $state['cca3'], $state->postal, $country);
 
-        return $state->overwrite($rinvex);
+        return $state->replaceRecursive($rinvex);
     }
 
     /**
@@ -283,6 +283,6 @@ class Rinvex extends Base
             'postal' => $postal,
         ];
 
-        return $rinvex->overwrite($mergeable);
+        return $rinvex->replaceRecursive($mergeable);
     }
 }

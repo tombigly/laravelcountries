@@ -155,7 +155,7 @@ class Hydrator
     private function loadCities($country)
     {
         return $this->repository->getHelper()->loadJson($country['cca3'], 'cities/default')
-                ->overwrite($this->repository->getHelper()->loadJson($country['cca3'], 'cities/overload'));
+                ->replaceRecursive($this->repository->getHelper()->loadJson($country['cca3'], 'cities/overload'));
     }
 
     /**
@@ -167,7 +167,7 @@ class Hydrator
     private function loadStates($country)
     {
         return $this->repository->getHelper()->loadJson($country['cca3'], 'states/default')
-                ->overwrite($this->repository->getHelper()->loadJson($country['cca3'], 'states/overload'));
+                ->replaceRecursive($this->repository->getHelper()->loadJson($country['cca3'], 'states/overload'));
     }
 
     /**
@@ -179,7 +179,7 @@ class Hydrator
     private function loadTaxes($country)
     {
         return $this->repository->getHelper()->loadJson($country['cca3'], 'taxes/default')
-                                ->overwrite($this->repository->getHelper()->loadJson($country['cca3'], 'taxes/overload'));
+                                ->replaceRecursive($this->repository->getHelper()->loadJson($country['cca3'], 'taxes/overload'));
     }
 
     /**
@@ -289,7 +289,7 @@ class Hydrator
      */
     public function hydrateFlag($country)
     {
-        $country = countriesCollect($country)->overwrite(
+        $country = countriesCollect($country)->replaceRecursive(
             ['flag' => $this->repository->makeAllFlags($country)]
         );
 
@@ -321,7 +321,7 @@ class Hydrator
      */
     public function hydrateTimezones($country)
     {
-        return $country->overwrite(['timezones' => $this->repository->findTimezones($country['cca3'])]);
+        return $country->replaceRecursive(['timezones' => $this->repository->findTimezones($country['cca3'])]);
     }
 
     /**
@@ -335,7 +335,7 @@ class Hydrator
         $country = $this->hydrateTimezones($country);
 
         $country['timezones'] = $country->timezones->map(function ($timezone) {
-            return $timezone->overwrite(['times' => $this->repository->findTimezoneTime($timezone['zone_id'])]);
+            return $timezone->replaceRecursive(['times' => $this->repository->findTimezoneTime($timezone['zone_id'])]);
         });
 
         return $country;
@@ -361,7 +361,7 @@ class Hydrator
                     ];
                 }
 
-                if (is_object($code)) {
+                if (is_object($code) || is_array($code)) {
                     $code = $currencyCode;
                 }
 

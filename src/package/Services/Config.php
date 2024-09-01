@@ -49,7 +49,7 @@ class Config
 
             $this->prefix = 'countries.';
         } else {
-            $this->config = $this->loadConfig()->overwrite($config);
+            $this->config = $this->loadConfig()->replaceRecursive($config);
         }
     }
 
@@ -66,14 +66,14 @@ class Config
     }
 
     /**
-     * Redirect properties access to config's Coollection.
+     * Redirect properties access to config's Collection.
      *
      * @param $name
      * @return mixed|static
      */
     public function __get($name)
     {
-        return $this->config->{$name};
+        return $this->config->get($name);
     }
 
     /**

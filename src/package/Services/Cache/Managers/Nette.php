@@ -61,7 +61,7 @@ class Nette implements CacheInterface
     public function getCacheDir()
     {
         if (is_null($this->dir)) {
-            $this->dir = $this->config->cache->directory ?: sys_get_temp_dir().'/__PRAGMARX_COUNTRIES__/cache';
+            $this->dir = $this->config->cache['directory'] ?: sys_get_temp_dir().'/__PRAGMARX_COUNTRIES__/cache';
 
             if (! file_exists($this->dir)) {
                 mkdir($this->dir, 0755, true);

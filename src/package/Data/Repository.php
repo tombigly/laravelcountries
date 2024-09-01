@@ -153,7 +153,7 @@ class Repository
             return [Str::upper($code) => $country];
         });
 
-        $this->countriesJson = $this->countriesJson->overwrite($overload);
+        $this->countriesJson = $this->countriesJson->replaceRecursive($overload);
 
         return $this->countriesJson;
     }
@@ -218,7 +218,7 @@ class Repository
             return [Str::upper($code) => $country];
         });
 
-        return $currencies->overwrite($overload);
+        return $currencies->replaceRecursive($overload);
     }
 
     /**

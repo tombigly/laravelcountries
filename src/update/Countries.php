@@ -145,7 +145,7 @@ class Countries extends Base
             return [$countryCode => $result];
         });
 
-        return $mledoze->overwrite($countries);
+        return $mledoze->replaceRecursive($countries);
     }
 
     public function clearCountryCurrencies($country)
